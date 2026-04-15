@@ -1,0 +1,87 @@
+# This configuration was generated with the setup-qlty-toml skill.
+# For reference: https://docs.qlty.sh/qlty-toml
+config_version = "0"
+
+exclude_patterns = [
+  "**/target/**",
+  "**/node_modules/**",
+  "**/build/**",
+  "**/.gradle/**",
+  "**/bin/**",
+  "**/.mvn/**",
+]
+
+test_patterns = [
+  "**/test/**",
+  "**/*Tests.java",
+  "**/*Test.java",
+]
+
+[smells]
+mode = "comment"
+
+[language.java.smells]
+function_complexity.threshold = 20
+file_length.threshold = 400
+
+# Required — points to the built-in Qlty plugin registry.
+[[source]]
+name = "default"
+default = true
+
+# Java formatter
+[[plugin]]
+name = "google-java-format"
+mode = "comment"
+
+# Java static analysis
+[[plugin]]
+name = "pmd"
+mode = "monitor"
+
+# IaC security (docker-compose.yml, k8s/ manifests)
+[[plugin]]
+name = "checkov"
+mode = "block"
+
+# Kubernetes manifest linter (k8s/ directory)
+[[plugin]]
+name = "kube-linter"
+mode = "comment"
+
+# Secrets detection
+[[plugin]]
+name = "trufflehog"
+mode = "block"
+
+# Dependency vulnerability scanning (pom.xml present)
+[[plugin]]
+name = "osv-scanner"
+mode = "block"
+
+# Markdown linting (README.md present)
+[[plugin]]
+name = "markdownlint"
+mode = "comment"
+
+# GitHub Actions workflow linter
+[[plugin]]
+name = "actionlint"
+mode = "comment"
+
+# YAML linting (docker-compose.yml, .github/workflows/, k8s/)
+[[plugin]]
+name = "yamllint"
+mode = "comment"
+
+# Downgrade all pmd findings to monitor — first-run strategy for Spring Boot
+# (Spring annotation processing can cause false positives, especially UnusedImports)
+[[triage]]
+plugins = ["pmd"]
+set.mode = "monitor"
+
+# Specifically downgrade UnusedImports which is frequently a Spring false positive
+[[triage]]
+plugins = ["pmd"]
+rules = ["pmd:UnusedImports"]
+set.mode = "monitor"
