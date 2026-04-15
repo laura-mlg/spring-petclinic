@@ -1,0 +1,119 @@
+# This configuration was generated with the setup-qlty-toml skill.
+# For reference: https://docs.qlty.sh/qlty-toml
+config_version = "0"
+
+exclude_patterns = [
+  "*_min.*",
+  "*-min.*",
+  "*.min.*",
+  "**/.yarn/**",
+  "**/*.d.ts",
+  "**/bower_components/**",
+  "**/build/**",
+  "**/cache/**",
+  "**/deps/**",
+  "**/dist/**",
+  "**/extern/**",
+  "**/external/**",
+  "**/generated/**",
+  "**/Godeps/**",
+  "**/node_modules/**",
+  "**/protos/**",
+  "**/seed/**",
+  "**/target/**",
+  "**/testdata/**",
+  "**/vendor/**",
+]
+
+test_patterns = [
+  "**/test/**",
+  "**/spec/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/*_test.*",
+  "**/*_spec.*",
+  "**/test_*.*",
+  "**/spec_*.*",
+]
+
+[smells]
+mode = "comment"
+
+[[source]]
+name = "default"
+default = true
+
+# Java formatter
+[[plugin]]
+name = "google-java-format"
+mode = "comment"
+
+# Java static analysis
+[[plugin]]
+name = "pmd"
+mode = "comment"
+
+# Deep Java code quality analysis
+[[plugin]]
+name = "radarlint-java"
+mode = "comment"
+
+# Security scanners
+[[plugin]]
+name = "trufflehog"
+mode = "block"
+
+[[plugin]]
+name = "zizmor"
+mode = "block"
+
+# Vulnerability scanning (monitor until noise is understood)
+[[plugin]]
+name = "osv-scanner"
+mode = "monitor"
+
+[[plugin]]
+name = "trivy"
+mode = "monitor"
+drivers = [
+  "config",
+  "fs-vuln",
+]
+
+# Infrastructure & container security (monitor — can be noisy)
+[[plugin]]
+name = "checkov"
+mode = "monitor"
+
+[[plugin]]
+name = "kube-linter"
+mode = "monitor"
+
+[[plugin]]
+name = "radarlint-iac"
+mode = "monitor"
+
+# Dockerfile linter
+[[plugin]]
+name = "hadolint"
+mode = "comment"
+
+# GitHub Actions
+[[plugin]]
+name = "actionlint"
+mode = "comment"
+
+# YAML linter
+[[plugin]]
+name = "yamllint"
+mode = "comment"
+
+# Markdown linter
+[[plugin]]
+name = "markdownlint"
+mode = "comment"
+
+# Custom text pattern search (monitor — review rules before enforcing)
+[[plugin]]
+name = "ripgrep"
+mode = "monitor"
